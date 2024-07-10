@@ -39,8 +39,8 @@ namespace Library.Context
 
             modelBuilder.Entity<BorrowedBooks>()
                 .HasOne(bb => bb.Book)
-                .WithMany(b => b.BorrowedBooks)
-                .HasForeignKey(bb => bb.BookId);
+                .WithOne(b => b.BorrowedBook)
+                .HasForeignKey<BorrowedBooks>(bb => bb.BookId);
 
            
         }
