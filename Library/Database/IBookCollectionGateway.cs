@@ -7,8 +7,8 @@ namespace Library.Database
     {
         Task<bool> CreateBook(Book book);
         Task<Book> FetchBook(int id);
-
         Task<bool> UpdateBook(BookUpdateDto bookUpdate);
+        Task<bool> DeleteBook(int id);
 
     }
 }

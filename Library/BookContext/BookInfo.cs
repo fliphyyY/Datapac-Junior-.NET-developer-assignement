@@ -35,5 +35,10 @@ namespace Library.BookContext
         {
             return await myBookCollectionGateway.UpdateBook(bookUpdate);
         }
+
+        public async Task<bool> DeleteBook(int id)
+        {
+            return await myBookCollectionGateway.DeleteBook(id);
+        }
     }
 }

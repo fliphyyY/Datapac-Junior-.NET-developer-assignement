@@ -19,7 +19,6 @@ namespace Library.Database
         public async Task<bool> CreateBook(Book book)
         {
             
-
             var pom = await myLibraryDbContext.Books.AddAsync(book);
             var result = await myLibraryDbContext.SaveChangesAsync();
 
@@ -45,7 +44,7 @@ namespace Library.Database
             await using (var db =  myLibraryDbContext)
             {
 
-                var book = await myLibraryDbContext.Books.FirstOrDefaultAsync(b => b.BookId == bookUpdate.BookId);
+                var book = await FetchBook(bookUpdate.BookId);
                 if (book is  null || (bookUpdate.Author is null && bookUpdate.Title is null))
                 {
                     return false;
@@ -63,6 +62,30 @@ namespace Library.Database
                 return false;
 
 
+            }
+        }
+
+        public async Task<bool> DeleteBook(int id)
+        {
+            await using (var db = myLibraryDbContext)
+            {
+
+                var book = await FetchBook(id);
+                if (book is null )
+                {
+                    return false;
+                }
+
+                
+                db.Remove(book);
+                var result =await db.SaveChangesAsync();
+
+                if (result > 0)
+                {
+                    return true;
+                }
+
+                return false;
             }
         }
     }

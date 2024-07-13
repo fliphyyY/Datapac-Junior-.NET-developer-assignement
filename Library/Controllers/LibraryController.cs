@@ -55,5 +55,19 @@ namespace Library.Controllers
             }
             return Ok(new { message = $"Update of bookUpdate with id `{bookUpdate.BookId}` has been successful!" });
         }
+
+        [AllowAnonymous]
+        [HttpPost("deleteBook" + "/{id}")]
+        public async Task<IActionResult> DeleteBook(int id)
+        {
+            var result = await myBookInfo.DeleteBook(id);
+            if (result == false)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,$"Deleting of the book with id `{id}` has failed!");
+
+
+            }
+            return Ok(new { message = $"Deleting of the book with id `{id}` has been successful!" });
+        }
     }
 }

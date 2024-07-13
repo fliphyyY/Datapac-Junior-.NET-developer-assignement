@@ -11,5 +11,7 @@ namespace Library.BookContext
         Task<Book> GetBook(int id);
 
         Task<bool> UpdateBook(BookUpdateDto bookUpdate);
+
+        Task<bool> DeleteBook(int id);
     }
 }
