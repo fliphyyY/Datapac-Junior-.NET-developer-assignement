@@ -9,7 +9,7 @@ namespace Library.Context
     public class LibraryDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public DbSet<Book> Books { get; set; }
-        public DbSet<BorrowedBooks> BorrowedBooks { get; set; }
+        public DbSet<BorrowedBook> BorrowedBooks { get; set; }
 
         public LibraryDbContext(DbContextOptions<LibraryDbContext> options) : base(options)
         {
@@ -29,18 +29,18 @@ namespace Library.Context
                 .Property(b => b.Available)
                 .HasDefaultValue(true);
 
-            modelBuilder.Entity<BorrowedBooks>()
+            modelBuilder.Entity<BorrowedBook>()
                 .HasKey(bb => bb.BorrowId);
 
-            modelBuilder.Entity<BorrowedBooks>()
+            modelBuilder.Entity<BorrowedBook>()
                 .HasOne(bb => bb.User)
                 .WithMany(u => u.BorrowedBooks)
                 .HasForeignKey(bb => bb.UserId);
 
-            modelBuilder.Entity<BorrowedBooks>()
+            modelBuilder.Entity<BorrowedBook>()
                 .HasOne(bb => bb.Book)
                 .WithOne(b => b.BorrowedBook)
-                .HasForeignKey<BorrowedBooks>(bb => bb.BookId);
+                .HasForeignKey<BorrowedBook>(bb => bb.BookId);
 
            
         }

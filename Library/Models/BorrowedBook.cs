@@ -1,6 +1,6 @@
 ﻿namespace Library.Models
 {
-    public class BorrowedBooks
+    public class BorrowedBook
     {
             public int BorrowId { get; set; }
             public int UserId { get; set; }

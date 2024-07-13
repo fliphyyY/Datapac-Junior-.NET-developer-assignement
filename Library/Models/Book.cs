@@ -7,7 +7,7 @@
         public string Author { get; set; }
         public bool Available { get; set; }
 
-        public BorrowedBooks BorrowedBook { get; set; }
+        public BorrowedBook BorrowedBook { get; set; }
 
     }
 }

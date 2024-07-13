@@ -3,6 +3,7 @@ using Library.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 
 namespace Library.Controllers
 {
@@ -21,25 +22,16 @@ namespace Library.Controllers
         [HttpPost("createBook")]
         public async Task<IActionResult> CreateBook(BookData bookData)
         {
-            var pom = await myBookInfo.CreateBook(bookData);
-
-            if (!pom)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to saved a book!");
-            }
-            return Ok(new { message = $"The book with name `{bookData.Title}` has been successfully saved to database!" });
+            var result = await myBookInfo.CreateBook(bookData);
+            return StatusCode(result.StatusCode, result.Message);
         }
 
         [AllowAnonymous]
         [HttpGet("getBook" + "/{id}")]
-        public async Task<ActionResult<Book>> GetBook(int id)
+        public async Task<IActionResult> GetBook(int id)
         {
-            var book = await myBookInfo.GetBook(id);
-            if (book == null)
-            {
-                return NotFound();
-            }
-            return Ok(book);
+            var result =  await myBookInfo.GetBook(id);
+            return StatusCode(result.StatusCode, result.Data);
         }
 
         [AllowAnonymous]
@@ -47,13 +39,7 @@ namespace Library.Controllers
         public async Task<IActionResult> UpdateBook(BookUpdateDto bookUpdate)
         {
             var result = await myBookInfo.UpdateBook(bookUpdate);
-            if (result == false)
-            {
-                return NotFound(new { message = $"Update of bookUpdate with id `{bookUpdate.BookId}` has failed!" });
-
-
-            }
-            return Ok(new { message = $"Update of bookUpdate with id `{bookUpdate.BookId}` has been successful!" });
+            return StatusCode(result.StatusCode, result.Message);
         }
 
         [AllowAnonymous]
@@ -61,13 +47,16 @@ namespace Library.Controllers
         public async Task<IActionResult> DeleteBook(int id)
         {
             var result = await myBookInfo.DeleteBook(id);
-            if (result == false)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,$"Deleting of the book with id `{id}` has failed!");
+            return StatusCode(result.StatusCode, result.Message);
+        }
 
 
-            }
-            return Ok(new { message = $"Deleting of the book with id `{id}` has been successful!" });
+        [AllowAnonymous]
+        [HttpPost("borrowBook")]
+        public async Task<IActionResult> BorrowBook(BorrowedBookDto borrowedBook)
+        {
+            var result = await myBookInfo.BorrowBook(borrowedBook);
+            return StatusCode(result.StatusCode, result.Message);
         }
     }
 }

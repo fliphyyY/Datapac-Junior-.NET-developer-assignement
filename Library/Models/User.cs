@@ -8,7 +8,7 @@ namespace Library.Models
 
         public DateTime CreatedAt { get; set; }
 
-        public ICollection<BorrowedBooks> BorrowedBooks { get; set; }
+        public ICollection<BorrowedBook> BorrowedBooks { get; set; }
 
 
 

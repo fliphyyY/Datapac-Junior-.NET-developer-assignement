@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Library.CustomResponse;
 using Library.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,12 +7,14 @@ namespace Library.BookContext
 {
     public interface IBookInfo
     {
-        Task<bool> CreateBook(BookData bookData);
+        Task<ResponseHandler> CreateBook(BookData bookData);
 
-        Task<Book> GetBook(int id);
+        Task<ResponseHandler> GetBook(int id);
 
-        Task<bool> UpdateBook(BookUpdateDto bookUpdate);
+        Task<ResponseHandler> UpdateBook(BookUpdateDto bookUpdate);
 
-        Task<bool> DeleteBook(int id);
+        Task<ResponseHandler> DeleteBook(int id);
+
+        Task<ResponseHandler> BorrowBook(BorrowedBookDto borrowedBook);
     }
 }
