@@ -6,10 +6,10 @@ namespace Library.Models
     public class User : IdentityUser<int>
     {
 
+        public DateTime CreatedAt { get; set; }
 
         public ICollection<BorrowedBooks> BorrowedBooks { get; set; }
-        
-        public DateTime CreatedAt { get; set; }
+
 
 
     }
