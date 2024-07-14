@@ -1,5 +1,4 @@
 ﻿using Library.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Database
 {

@@ -1,7 +1,5 @@
 ﻿#nullable enable
 using System.ComponentModel.DataAnnotations;
-using System.Numerics;
-using System.Runtime.Serialization;
 
 namespace Library.Models
 {

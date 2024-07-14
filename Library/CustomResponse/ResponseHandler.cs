@@ -1,7 +1,4 @@
-﻿using System.Net;
-using Microsoft.AspNetCore.Mvc;
-
-namespace Library.CustomResponse
+﻿namespace Library.CustomResponse
 {
     public class ResponseHandler
     {

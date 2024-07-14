@@ -1,13 +1,7 @@
-﻿using System.Data.SqlTypes;
-using System.Net;
-using System.Runtime.CompilerServices;
-using Library.CustomResponse;
+﻿using Library.CustomResponse;
 using Library.Database;
 using Library.Models;
-using Microsoft.AspNetCore.Http.Connections;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Library.BookContext
 {
@@ -47,26 +41,6 @@ namespace Library.BookContext
 
         public async Task<ResponseHandler> GetBook(int id)
         {
-            /* var User = new User()
-             {
-                 UserName = "test123@gmail.com",
-                 Email = "test123@gmail.com"
-             };
-
-             var User1 = new User()
-             {
-                 UserName = "jan.neznamy@gmail.com",
-                 Email = "jan.neznamy@gmail.com"
-             };
-
-             var User2 = new User()
-             {
-                 UserName = "alfonz.golias@gmail.com",
-                 Email = "alfonz.golias@gmail.com"
-             };
-             var pom = await myUserManager.CreateAsync(User, "heslo321Aqw#");
-             await myUserManager.CreateAsync(User1, "heslo321QWWQs@");
-             await myUserManager.CreateAsync(User2, "heslo321QWs@");*/
             var book = await myBookCollectionGateway.FetchBook(id);
 
             BookViewModel bookViewModel = null;
@@ -155,8 +129,8 @@ namespace Library.BookContext
             {
                 return  new ResponseHandler()
                 {
-                    StatusCode = StatusCodes.Status422UnprocessableEntity,
-                    Message = $"The book with name {book.Title} is not available!",
+                    StatusCode = StatusCodes.Status409Conflict,
+                    Message = $"The book with name {book.Title} is not available for borrowing!",
                     Succeeded = false
                 };
             }
