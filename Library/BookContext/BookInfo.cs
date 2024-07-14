@@ -13,8 +13,8 @@ namespace Library.BookContext
 {
     public class BookInfo : IBookInfo
     {
-        private readonly bool Available = true;
-        private readonly bool NotAvailable = false;
+        private const bool Available = true;
+        private const bool NotAvailable = false;
 
         private readonly IBookCollectionGateway myBookCollectionGateway;
         private readonly UserManager<User> myUserManager;
@@ -68,12 +68,25 @@ namespace Library.BookContext
              await myUserManager.CreateAsync(User1, "heslo321QWWQs@");
              await myUserManager.CreateAsync(User2, "heslo321QWs@");*/
             var book = await myBookCollectionGateway.FetchBook(id);
+
+            BookViewModel bookViewModel = null;
+            if (book is not null)
+            {
+                  bookViewModel = new BookViewModel()
+                 {
+                     BookId = book.BookId,
+                     Author = book.Author,
+                     Title = book.Title,
+                     Available = book.Available,
+                 };
+            }
+
             return new ResponseHandler()
             {
                 StatusCode = book is null ? StatusCodes.Status404NotFound : StatusCodes.Status200OK,
                 Message = String.Empty,
-                Succeeded = book is not null,
-                Data = book,
+                Succeeded = book is null,
+                Data = book is null ? null : bookViewModel,
             };
 
         }
@@ -133,7 +146,7 @@ namespace Library.BookContext
                 return new ResponseHandler()
                 {
                     StatusCode = StatusCodes.Status404NotFound,
-                    Message = $"The book with was not found!",
+                    Message = "The book was not found!",
                     Succeeded = false
                 };
             }
@@ -148,9 +161,20 @@ namespace Library.BookContext
                 };
             }
 
+            var user = await myUserManager.FindByIdAsync(borrowedBook.UserId.ToString());
+            if (user is null)
+            {
+                return new ResponseHandler()
+                {
+                    StatusCode = StatusCodes.Status404NotFound,
+                    Message = "The user does not exist!",
+                    Succeeded = false
+                };
+            }
+
             var newBook = new BorrowedBook()
             {
-                UserId = borrowedBook.UserId,
+                UserId = borrowedBook.UserId,//
                 BookId = borrowedBook.BorrowedBookId,
                 BorrowedDate = DateTime.Now,
                 DueDate = DateTime.Now.AddDays(14),
@@ -164,7 +188,7 @@ namespace Library.BookContext
             return new ResponseHandler()
             {
                 StatusCode = result > 0 ? StatusCodes.Status200OK : StatusCodes.Status500InternalServerError,
-                Message = result > 0 ? $"The book with name {book.Title} has been borrowed!" : $"The borrowing of the book with name {book.Title} failed!",
+                Message = result > 0 ? $"The book with name {book.Title} has been borrowed!" : $"The borrowing of the book with name {book.Title} has failed!",
                 Succeeded = result > 0 
             };
         }
