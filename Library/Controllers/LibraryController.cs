@@ -17,7 +17,7 @@ namespace Library.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("createBook")]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateBook(BookData bookData)
         {
             var result = await myBookInfo.CreateBook(bookData);
@@ -25,7 +25,7 @@ namespace Library.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("getBook" + "/{id}")]
+        [HttpGet("get" + "/{id}")]
         public async Task<IActionResult> GetBook(int id)
         {
             var result =  await myBookInfo.GetBook(id);
@@ -33,7 +33,7 @@ namespace Library.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("updateBook")]
+        [HttpPost("update")]
         public async Task<IActionResult> UpdateBook(BookUpdateDto bookUpdate)
         {
             var result = await myBookInfo.UpdateBook(bookUpdate);
@@ -41,19 +41,27 @@ namespace Library.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("deleteBook" + "/{id}")]
-        public async Task<IActionResult> DeleteBook(int id)
+        [HttpPost("delete")]
+        public async Task<IActionResult> DeleteBook(BookIdDto bookId)
         {
-            var result = await myBookInfo.DeleteBook(id);
+            var result = await myBookInfo.DeleteBook(bookId.BookId);
             return StatusCode(result.StatusCode, result.Message);
         }
 
 
         [AllowAnonymous]
-        [HttpPost("borrowBook")]
+        [HttpPost("borrow")]
         public async Task<IActionResult> BorrowBook(BorrowedBookDto borrowedBook)
         {
             var result = await myBookInfo.BorrowBook(borrowedBook);
+            return StatusCode(result.StatusCode, result.Message);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("return")]
+        public async Task<IActionResult> ReturnBook(BookIdDto bookId)
+        {
+            var result = await myBookInfo.ReturnBook(bookId.BookId);
             return StatusCode(result.StatusCode, result.Message);
         }
     }

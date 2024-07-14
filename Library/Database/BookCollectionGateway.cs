@@ -38,13 +38,15 @@ namespace Library.Database
 
         public async Task<int> ChangeAvailableStatus(int id, bool available)
         {
-            return await myLibraryDbContext.Books.Where(b => b.BookId == id)
-                .ExecuteUpdateAsync(setters => setters.SetProperty(b => b.Available, available));
+              await myLibraryDbContext.Books.Where(b => b.BookId == id)
+                  .ExecuteUpdateAsync(setters => setters.SetProperty(b => b.Available, available));
+            return await myLibraryDbContext.SaveChangesAsync();
+
         }
 
         public async Task<int> DeleteBook(int id, Book book)
         {
-                myLibraryDbContext.Remove(book);
+                myLibraryDbContext.Books.Remove(book);
                 return await myLibraryDbContext.SaveChangesAsync();
         }
 
@@ -52,6 +54,17 @@ namespace Library.Database
         {
              await myLibraryDbContext.BorrowedBooks.AddAsync(borrowedBook);
              return await myLibraryDbContext.SaveChangesAsync();
+        }
+
+
+        public async Task<int> ReturnBook(int bookId)
+        {
+          return await myLibraryDbContext.BorrowedBooks.Where(b => b.BookId == bookId).ExecuteDeleteAsync();
+        }
+
+        public async Task<bool> IsBookBorrowed(int bookId)
+        {
+            return await myLibraryDbContext.BorrowedBooks.AnyAsync(b => b.BookId == bookId);
         }
     }
 }

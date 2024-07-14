@@ -148,7 +148,7 @@ namespace Library.BookContext
 
             var newBook = new BorrowedBook()
             {
-                UserId = borrowedBook.UserId,//
+                UserId = borrowedBook.UserId,
                 BookId = borrowedBook.BorrowedBookId,
                 BorrowedDate = DateTime.Now,
                 DueDate = DateTime.Now.AddDays(14),
@@ -166,5 +166,40 @@ namespace Library.BookContext
                 Succeeded = result > 0 
             };
         }
+
+        public async Task<ResponseHandler> ReturnBook(int bookId)
+        {
+            var isBorrowed = await myBookCollectionGateway.IsBookBorrowed(bookId);
+            if (!isBorrowed)
+            {
+                return new ResponseHandler()
+                {
+                    StatusCode = StatusCodes.Status404NotFound,
+                    Message = "This book is not borrowed!",
+                    Succeeded = false
+                };
+            }
+
+            var resultReturn = await myBookCollectionGateway.ReturnBook(bookId);
+
+            if (resultReturn > 0)
+            {
+                await myBookCollectionGateway.ChangeAvailableStatus(bookId, Available);
+                return new ResponseHandler()
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Message = "This book was successfully returned!",
+                    Succeeded = true
+                };
+            }
+
+            return new ResponseHandler()
+            {
+                StatusCode = StatusCodes.Status500InternalServerError,
+                Message = "The book returning failed!",
+                Succeeded = false
+            };
+        }
     }
+    
 }

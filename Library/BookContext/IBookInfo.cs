@@ -14,5 +14,7 @@ namespace Library.BookContext
         Task<ResponseHandler> DeleteBook(int id);
 
         Task<ResponseHandler> BorrowBook(BorrowedBookDto borrowedBook);
+
+        Task<ResponseHandler> ReturnBook(int bookId);
     }
 }

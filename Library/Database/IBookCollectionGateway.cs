@@ -10,6 +10,7 @@ namespace Library.Database
         Task<int> ChangeAvailableStatus(int id, bool available);
         Task<int> DeleteBook(int id, Book book);
         Task<int> BorrowBook(BorrowedBook borrowedBook);
-
+        Task<int> ReturnBook(int bookId);
+        Task<bool> IsBookBorrowed(int bookId);
     }
 }
