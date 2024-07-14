@@ -12,5 +12,5 @@ The LibraryController has six endpoints:
 * Get the details of an existing book by ID
 * Updating an existing book
 * Deleting a book
-* Borrowing a new book
+* Borrowing a book
 * Confirmation of the return of the borrowed book
