@@ -41,7 +41,17 @@ namespace Library.Context
                 .WithOne(b => b.BorrowedBook)
                 .HasForeignKey<BorrowedBook>(bb => bb.BookId);
 
-           
+            modelBuilder.Entity<User>().HasData(new IdentityUser<int>
+            {
+                Id = 1,
+                UserName = "user123456",
+                NormalizedUserName = "USER123456",
+                Email = "test@testing.com",
+                NormalizedEmail = "TEST@TESTING.COM",
+                EmailConfirmed = false,
+                SecurityStamp = Guid.NewGuid().ToString()
+            });
+
         }
     }
 }
